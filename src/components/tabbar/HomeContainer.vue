@@ -12,11 +12,11 @@
 
     <ul class="mui-table-view mui-grid-view mui-grid-9">
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-        <a href="#">
+        <router-link to="/home/newlist">
           <!-- <span class="mui-icon mui-icon-home"></span> -->
           <img src="../../image/menu1.png" />
           <div class="mui-media-body">新闻资讯</div>
-        </a>
+        </router-link>
       </li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
         <a href="#">
@@ -74,8 +74,7 @@ export default {
   },
   methods: {
     getLunbotu() {
-      console.log("111");
-      let url = "http://localhost:3001/api/getlunbotu";
+      let url = "api/getlunbotu";
       this.$http.get(url).then(result => {
         if (result.body.status === 0) {
           this.lunbotuList = result.body.message;

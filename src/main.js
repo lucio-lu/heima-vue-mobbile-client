@@ -9,8 +9,15 @@ import app from './app.vue'
 import './lib/mui/css/mui.min.css'
 import './lib/mui/css/icons-extra.css'
 
+import moment from 'moment'
+
+Vue.filter('dateFormat', function (dataStr, pattern = "YYYY-MM-DD HH:mm:ss") {
+    return moment(dataStr).format(pattern)
+})
+
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
+Vue.http.options.root = "http://localhost:3001/"
 
 // mint-ui
 import 'mint-ui/lib/style.css'
