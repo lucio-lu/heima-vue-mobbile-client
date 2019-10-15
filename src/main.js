@@ -17,7 +17,10 @@ Vue.filter('dateFormat', function (dataStr, pattern = "YYYY-MM-DD HH:mm:ss") {
 
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
+// 全局设置请求的根路径
 Vue.http.options.root = "http://localhost:3001/"
+// 全局设置 post 时候表单数据格式组织形式
+Vue.http.options.emulateJSON = true;
 
 // mint-ui
 import 'mint-ui/lib/style.css'

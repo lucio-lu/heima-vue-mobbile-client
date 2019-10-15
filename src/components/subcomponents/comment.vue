@@ -2,9 +2,9 @@
   <div class="cmt-container">
     <h3>发表评论</h3>
     <hr />
-    <textarea placeholder="请输入要评论的内容（最多120字）" maxlength="120"></textarea>
+    <textarea placeholder="请输入要评论的内容（最多120字）" maxlength="120" v-model="msg"></textarea>
 
-    <mt-button type="primary" size="large">发表评论</mt-button>
+    <mt-button type="primary" size="large" @click="postComment">发表评论</mt-button>
 
     <div class="cmt-list">
       <div class="cmt-item" v-for="(comment, index) in comments" :key="comment.id">
@@ -26,7 +26,8 @@ export default {
   data() {
     return {
       comments: [],
-      pageIndex: 1
+      pageIndex: 1,
+      msg: ""
     };
   },
   props: ["id"],
@@ -40,7 +41,7 @@ export default {
         .get("api/getComments/" + this.id + "?pageindex=" + this.pageIndex)
         .then(result => {
           if (result.body.status === 0) {
-            this.comments.concat(result.body.message);
+            this.comments = this.comments.concat(result.body.message);
           } else {
             Toast("获取评论失败！");
           }
@@ -49,6 +50,31 @@ export default {
     getMore() {
       this.pageIndex++;
       this.getComments();
+    },
+    postComment() {
+      if (this.msg.trim().length === 0) {
+        return Toast("评论内容不能为空！");
+      }
+      // /api/postcomment/:artid
+      // body : content -> { emulateJSON: true }
+      this.$http
+        .post("api/postcomment/" + this.id, {
+          content: this.msg.trim()
+        })
+        .then(function(result) {
+          if (result.body.status === 0) {
+            var cmt = {
+              user_name: "匿名用户",
+              add_time: Date.now(),
+              content: this.msg
+            };
+            this.comments.unshift(cmt);
+            this.msg = "";
+          } else {
+            return Toast("评论失败！");
+          }
+        });
+      // 注意，老师这里用的是 $route.params.id 但实际id已经通过props传递进来了
     }
   }
 };
