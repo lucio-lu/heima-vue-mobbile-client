@@ -23,13 +23,12 @@ Vue.http.options.root = "http://localhost:3001/"
 import 'mint-ui/lib/style.css'
 
 //https://mint-ui.github.io/docs/#/en2/header
-import { Header } from 'mint-ui'
-Vue.component(Header.name, Header)
-
 // https://mint-ui.github.io/docs/#/zh-cn2/swipe
-import { Swipe, SwipeItem } from 'mint-ui';
+import { Header, Swipe, SwipeItem, Button } from 'mint-ui';
+Vue.component(Header.name, Header)
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
+Vue.component(Button.name, Button)
 
 let vm = new Vue({
     el: "#app",
