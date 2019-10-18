@@ -27,11 +27,17 @@ import 'mint-ui/lib/style.css'
 
 //https://mint-ui.github.io/docs/#/en2/header
 // https://mint-ui.github.io/docs/#/zh-cn2/swipe
-import { Header, Swipe, SwipeItem, Button } from 'mint-ui';
+// 图片懒加载 Lazyload http://mint-ui.github.io/docs/#/zh-cn2/lazyload
+/* import { Header, Swipe, SwipeItem, Button,Lazyload } from 'mint-ui';
 Vue.component(Header.name, Header)
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 Vue.component(Button.name, Button)
+Vue.use(Lazyload); // 用按需导入，懒加载会出问题，所以改成全部导入 */
+import MintUI from 'mint-ui'
+Vue.use(MintUI)
+import 'mint-ui/lib/style.css'
+
 
 let vm = new Vue({
     el: "#app",
