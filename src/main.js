@@ -38,6 +38,14 @@ import MintUI from 'mint-ui'
 Vue.use(MintUI)
 import 'mint-ui/lib/style.css'
 
+//     vue-preview
+import VuePreview from 'vue-preview'
+
+// defalut install
+Vue.use(VuePreview)
+
+
+//       end vue-preview
 
 let vm = new Vue({
     el: "#app",

@@ -6,3 +6,8 @@
 
 
 2 @ 略缩图还没做  P166
+
+``` powershell
+./node_modules/_moment@2.24.0@moment/moment.js
+Module build failed: Error: ENOENT: no such file or directory, open 'C:\Users\lucio\OneDrive\Documents\Heima\heima-vue-mobbile-client\node_modules\_moment@2.24.0@moment\moment.js'
+```
