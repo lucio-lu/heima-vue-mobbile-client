@@ -1,6 +1,14 @@
 <template>
   <div class="goods-list">
-    <div class="goods-item" v-for="item in goodslist" :key="item.id">
+    <!-- 1. a 标签跳转 2. wondow.location.href 编程式导航 -->
+    <!-- <router-link
+      class="goods-item"
+      v-for="item in goodslist"
+      :key="item.id"
+      :to="'/home/goodsinfo/'+item.id"
+      tag="div"
+    >-->
+    <div class="goods-item" v-for="item in goodslist" :key="item.id" @click="goDetail(item.id)">
       <img :src="item.img_url" />
       <h1 class="title">{{ item.title }}</h1>
       <div class="info">
@@ -47,6 +55,14 @@ export default {
     getMore() {
       this.pageindex++;
       this.getGoodsList();
+    },
+    goDetail(_goodsId) {
+      // 编程式导航
+      // https://router.vuejs.org/zh/guide/essentials/navigation.html
+      this.$router.push({ name: "goodsinfo", params: { id: _goodsId } });
+      // this.$router.push({ name: "goodsinfo", params: { _goodsId } }); @@@ 为什么这样网页没报错，但地址栏会只有一个#，没有后面的 pathname
+      // this.$route   是路由参数对象，所有路由中的参数，params, query
+      // this.$router  是一个路由导航对象，用它可以方便的使用js代码，实现路由的前进、后退、跳转
     }
   }
 };

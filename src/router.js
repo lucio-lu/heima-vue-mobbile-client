@@ -11,6 +11,7 @@ import NewsInfo from './components/news/NewsInfo.vue'
 import PhotoList from './components/photos/PhotoList.vue'
 import PhotoInfo from './components/photos/PhotoInfo.vue'
 import GoodsList from './components/goods/GoodsList.vue'
+import GoodsInfo from './components/goods/GoodsInfo.vue'
 
 const routes = [
     { path: '/', redirect: '/home' },
@@ -22,7 +23,8 @@ const routes = [
     { path: '/home/getnewsinfo/:id', component: NewsInfo },
     { path: '/home/photolist', component: PhotoList },
     { path: '/home/photoinfo/:id', component: PhotoInfo },
-    { path: '/home/goodslist', component: GoodsList }
+    { path: '/home/goodslist', component: GoodsList },
+    { path: '/home/goodsinfo/:id', component: GoodsInfo, name: 'goodsinfo' }
 ]
 
 const router = new VueRouter({
