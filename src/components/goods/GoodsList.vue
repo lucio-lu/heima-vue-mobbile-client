@@ -39,7 +39,6 @@ export default {
         .then(result => {
           if (result.body.status == 0) {
             this.goodslist = this.goodslist.concat(result.body.message);
-            console.log(this.goodslist);
           } else {
             Toast("获取商品列表失败");
           }
