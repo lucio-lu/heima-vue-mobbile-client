@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 新闻列表区域 -->
     <ul class="mui-table-view">
       <li class="mui-table-view-cell mui-media" v-for="item in newsList" :key="item.id">
         <router-link :to="'/home/getnewsinfo/'+item.id">
@@ -14,6 +15,9 @@
         </router-link>
       </li>
     </ul>
+
+    <!-- 加载更多 -->
+    <mt-button type="danger" size="large" @click="getMore">加载更多</mt-button>
   </div>
 </template>
 
@@ -23,7 +27,8 @@ import { Toast } from "mint-ui";
 export default {
   data() {
     return {
-      newsList: []
+      newsList: [],
+      pageindex: 1
     };
   },
   created() {
@@ -31,14 +36,20 @@ export default {
   },
   methods: {
     getNewsList() {
-      this.$http.get("api/getnewslist").then(result => {
-        if (result.body.status === 0) {
-          this.newsList = result.body.message;
-        } else {
-          Toast("获取列表失败");
-        }
-      });
-    }
+      this.$http
+        .get("api/getnewslist?pageindex=" + this.pageindex)
+        .then(result => {
+          if (result.body.status === 0) {
+            this.newsList = this.newsList.concat(result.body.message);
+          } else {
+            Toast("获取列表失败");
+          }
+        });
+    }, // end
+    getMore() {
+      this.pageindex++;
+      this.getNewsList();
+    } // end
   }
 };
 </script>

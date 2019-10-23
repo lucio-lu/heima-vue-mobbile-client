@@ -30,6 +30,7 @@
 <script>
 import { Toast } from "mint-ui";
 
+
 export default {
   data() {
     return {
@@ -64,7 +65,7 @@ export default {
       // this.$route   是路由参数对象，所有路由中的参数，params, query
       // this.$router  是一个路由导航对象，用它可以方便的使用js代码，实现路由的前进、后退、跳转
     }
-  }
+  } // methods
 };
 </script>
 

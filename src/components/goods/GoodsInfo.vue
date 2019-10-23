@@ -5,13 +5,15 @@
     <!-- 商品轮播图区域 -->
     <div class="mui-card">
       <div class="mui-card-content">
-        <div class="mui-card-content-inner">这是一个最简单的卡片视图控件；卡片视图常用来显示完整独立的一段信息，比如一篇文章的预览图、作者信息、点赞数量等</div>
+        <div class="mui-card-content-inner">
+          <swiper :lunbotuList="lunbotu"></swiper>
+        </div>
       </div>
     </div>
 
     <!-- 商品购买区域 -->
     <div class="mui-card">
-      <div class="mui-card-header">页眉</div>
+      <div class="mui-card-header">商品的名称标题</div>
       <div class="mui-card-content">
         <div class="mui-card-content-inner">包含页眉页脚的卡片，页眉常用来显示面板标题，页脚用来显示额外信息或支持的操作（比如点赞、评论等）</div>
       </div>
@@ -29,7 +31,38 @@
 </template>
 
 <script>
-export default {};
+import { Toast } from "mint-ui";
+import swiper from "../subcomponents/swiper.vue";
+
+export default {
+  data() {
+    return {
+      id: this.$route.params.id,
+      lunbotu: []
+    };
+  },
+  created() {
+    this.getLunbotu();
+  },
+  methods: {
+    getLunbotu() {
+      this.$http.get("api/getThumImagesGoods/" + this.id).then(result => {
+        if (result.body.status == 0) {
+          result.body.message.forEach(element => {
+            element.img = element.src;
+          });
+          this.lunbotu = result.body.message;
+          console.log(this.lunbotu);
+        } else {
+          Toast("获取轮播图失败");
+        }
+      });
+    }
+  }, // methods
+  components: {
+    swiper
+  }
+};
 </script>
 
 <style lang="scss" scoped>
