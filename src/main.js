@@ -52,6 +52,3 @@ let vm = new Vue({
     render: c => c(app),
     router
 })
-
-// 不知道为什么，在没有安装vue的时候，就已经有了vue
-console.log(Vue)
