@@ -1,9 +1,17 @@
 <template>
-  <div>商品评论</div>
+  <div>
+    <cmtbox :id="$route.params.id"></cmtbox>
+  </div>
 </template>
 
 <script>
-export default {};
+import cmtbox from "../subcomponents/comment.vue";
+
+export default {
+  components: {
+    cmtbox
+  }
+};
 </script>
 
 <style lang="scss" scoped>
