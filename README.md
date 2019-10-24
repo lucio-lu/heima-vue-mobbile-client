@@ -25,3 +25,6 @@ https://dev.dcloud.net.cn/mui/ui/
 商品详细使用了 mui 的numbox ，需要初始化`mui(Selector).numbox()`
 
 https://dev.dcloud.net.cn/mui/ui/#numbox
+
+
+该项目将于10月26号完成

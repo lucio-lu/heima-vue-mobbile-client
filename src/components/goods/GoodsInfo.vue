@@ -45,8 +45,8 @@
         </div>
       </div>
       <div class="mui-card-footer">
-        <mt-button type="primary" size="large" plain>图文介绍</mt-button>
-        <mt-button type="danger" size="large" plain>商品评论</mt-button>
+        <mt-button type="primary" size="large" plain @click="goDesc(id)">图文介绍</mt-button>
+        <mt-button type="danger" size="large" plain @click="goComment(id)">商品评论</mt-button>
       </div>
     </div>
   </div>
@@ -81,7 +81,7 @@ export default {
           Toast("获取轮播图失败");
         }
       });
-    }, // end getLunbotu
+    }, // getLunbotu()
     getInfo() {
       this.$http.get("api/goods/getinfo/" + this.id).then(result => {
         if (result.body.status == 0) {
@@ -90,7 +90,14 @@ export default {
           Toast("获取商品信息失败");
         }
       });
-    }
+    }, // getInfo()
+    goDesc(goodsId) {
+      // 编程式导航
+      this.$router.push({ name: "goodsdesc", params: { goodsId } });
+    }, // goDesc()
+    goComment(goodsId) {
+      this.$router.push({ name: "goodscomment", params: { goodsId } });
+    } // goComment()
   }, // methods
   components: {
     swiper,
