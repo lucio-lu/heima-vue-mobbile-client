@@ -1,7 +1,7 @@
 <template>
-  <div class="mui-numbox" data-numbox-min="1" data-numbox-max="9">
+  <div class="mui-numbox">
     <button class="mui-btn mui-btn-numbox-minus" type="button" @click="subtract">-</button>
-    <input id="test" class="mui-input-numbox" type="number" :value="nvalue" />
+    <input id="test" class="mui-input-numbox" type="number" :value="nvalue" @change="countChanged" />
     <button class="mui-btn mui-btn-numbox-plus" type="button" @click="addition">+</button>
   </div>
 </template>
@@ -25,26 +25,41 @@ https://segmentfault.com/a/1190000007621605
 https://zhuanlan.zhihu.com/p/24385322
 https://github.com/lucio-lu/heima-vue-mobbile-client/commit/960c098a9ca3111e79894ee8a3076aea5f923da6#diff-9364989eb561244e6c01b9bbd0eec7d2
 home下面的菜单都报错，这里使用的是router-link，最后会被转化成<a>标签，原始的html标签都报错，我也是郁闷了
-说实话，这个bug以我现在的水平我并看不懂，我最近加强了js和学习了vue，暂时还没有学dom和css，这个问题应该是和dom有关
-而且错误的代码段是mui内部，我的项目是点击router-link转化的<a>，这里路由是一个a标签，使用了href属性的#的特性实现的，本身是纯html，并没有绑定dom事件
+这个bug以我现在的水平我并看不懂，
+错误的代码段是mui内部，我的项目是点击router-link转化的<a>，这里路由是一个a标签，使用了href属性的#的特性实现的，本身是纯html，并没有绑定dom事件
 所以这里出错应该是mui造成的，并不是我的代码。
 再做“图片分享”功能的“头部列表”的时候，也出现了这个问题，当时也是mui造成的，解决方案是去掉了一些mui的样式，而在哪里我并没有跟着老师做。所以到了这里又粗错了。
-既然mui有这种问题，那我就放弃使用mui的js部分了，这里的样式仍旧使用mui，但是js自己来写
+所以这里不使用初始化mui，自己写js部分
 */
-// 暂时只完成 加 减 2个功能，因为老师的视频里也暂时只需要这2个功能，等到添加到“购物车”的时候，应该会需要同步value，而且到时候会根据服务器库存数据来设定最大最小值
 export default {
   data() {
     return {
       nvalue: 1
     };
   }, // data
-  methods: {
+  props: ["max"],
+  /* watch: {
+    max: function(newVal, oldVal) {
+      this.max = newVal;
+      mui('.mu1-numbox).numbox().setOption('max',5)
+    }
+  }, 
+教学视频中，老师初始化mui是放在mounted里头的，所以才会父组件已经得到数据之后，子组件仍旧一直是undefined
+我因为用mui，所以没这个问题
+  */ methods: {
     subtract() {
-      this.nvalue--;
-    }, // subtract()
+      if (this.nvalue > 0) {
+        this.nvalue--;
+      }
+    }, //
     addition() {
-      this.nvalue++;
-    } // addition()
+      if (this.nvalue < this.max) {
+        this.nvalue++;
+      }
+    }, //
+    countChanged() {
+      this.$emit("getCount", parseInt(this.nvalue)); // @@@其实这里自己实现v-model更好
+    }
   }
 };
 </script>

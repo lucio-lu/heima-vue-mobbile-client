@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <script src="../../../node_modules/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 绑定字符串 -->
+        <button-counter title="obj1.str" max="obj1.max"></button-counter>
+        <br />
+        <!-- 加了v-bind会计算 -->
+        <button-counter :title="obj1.str" :max="obj1.max"></button-counter>
+        <br />
+        <!-- 实际上，当前的vue版本，即使在 created ，并且 settimeout 之后，仍会自动绑定 -->
+        <button-counter :title="obj2.str" :max="obj2.max"></button-counter>
+    </div>
+    <template id="button-counter">
+        <button @click="addCount">{{ title }} click me {{ count }} times. (max:{{ max }})</button>
+    </template>
+    <script>
+        let app = new Vue({
+            el: '#app',
+            data: {
+                obj1: {},
+                obj2: {}
+            },
+            mounted() {
+                this.getData()
+            },
+            components: {
+                'button-counter': {
+                    data: function () { return { count: 0 } },
+                    props: ['title', 'max'],
+                    template: '#button-counter',
+                    methods: {
+                        addCount() {
+                            console.log(this.max)
+                            this.count++
+                        }
+                    }
+                }
+            },
+            methods: {
+                getData() {
+                    this.obj1 = {
+                        str: 'i_m_obj',
+                        max: 10
+                    }
+                    setTimeout(() => {
+                        this.obj2 = {
+                            str: 'i_m_obj2',
+                            max: 13
+                        }
+                    }, 2000);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

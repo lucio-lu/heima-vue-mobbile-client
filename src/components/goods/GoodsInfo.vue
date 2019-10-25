@@ -1,5 +1,8 @@
 <template>
   <div class="goodsinfo-container">
+    <transition @before-enter="beforeEnter" @enter="enger" @after-enter="afterEnter">
+      <div class="ball" v-show="ballFlag" ref="ball"></div>
+    </transition>
     <!-- \mui-master\examples\hello-mui\examples\card.html -->
 
     <!-- 商品轮播图区域 -->
@@ -24,11 +27,11 @@
           </p>
           <p>
             购买数量
-            <numbox></numbox>
+            <numbox @getCount="getSelectedCount" :max="goodsinfo.stock_quantity"></numbox>
           </p>
           <p>
             <mt-button type="primary" size="small">立即购买</mt-button>
-            <mt-button type="danger" size="small">加入购物车</mt-button>
+            <mt-button type="danger" size="small" @click="addToShopCar">加入购物车</mt-button>
           </p>
         </div>
       </div>
@@ -62,7 +65,9 @@ export default {
     return {
       id: this.$route.params.id,
       lunbotu: [],
-      goodsinfo: []
+      goodsinfo: [],
+      ballFlag: false, // 控制小球隐藏和显示的标识符
+      selectedCount: 1 // 默认选中1个
     };
   },
   created() {
@@ -94,10 +99,41 @@ export default {
     goDesc(goodsId) {
       // 编程式导航
       this.$router.push({ name: "goodsdesc", params: { goodsId } });
-    }, // goDesc()
+    },
     goComment(goodsId) {
       this.$router.push({ name: "goodscomment", params: { goodsId } });
-    } // goComment()
+    },
+    addToShopCar() {
+      this.ballFlag = !this.ballFlag;
+    },
+    beforeEnter(el) {
+      el.style.transform = "translate(0,0)";
+    },
+    enger(el, done) {
+      // domObject.getBoundingClientRect() 得到元素相对于左上角的距离
+      //developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
+
+      let ballPosition = this.$refs.ball.getBoundingClientRect();
+      // vue 不提倡操作dom，但是不是数据绑定操作，为了简单，可以偶尔操作一次dom
+      let badgePosition = document
+        .getElementById("badge")
+        .getBoundingClientRect();
+
+      let xDist = badgePosition.left - ballPosition.left;
+      let yDist = badgePosition.top - ballPosition.top;
+
+      https: el.offsetWidth;
+      el.style.transform = `translate(${xDist}px,${yDist}px)`;
+      // https://cubic-bezier.com/#.4,-0.3,1,.68
+      el.style.transition = "all 0.5s cubic-bezier(0,0,.25,1)";
+      done();
+    }, //
+    afterEnter(el) {
+      this.ballFlag = !this.ballFlag;
+    },
+    getSelectedCount(count) {
+      this.selectedCount = count;
+    }
   }, // methods
   components: {
     swiper,
@@ -123,6 +159,17 @@ export default {
     button {
       margin: 15px 0;
     }
+  }
+
+  .ball {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: red;
+    position: absolute;
+    z-index: 99;
+    top: 390px;
+    left: 146px;
   }
 }
 </style>
