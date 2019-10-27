@@ -50,14 +50,17 @@ export default {
     subtract() {
       if (this.nvalue > 0) {
         this.nvalue--;
+        this.countChanged();
       }
     }, //
     addition() {
       if (this.nvalue < this.max) {
         this.nvalue++;
+        this.countChanged();
       }
     }, //
     countChanged() {
+      console.log("11111111");
       this.$emit("getCount", parseInt(this.nvalue)); // @@@其实这里自己实现v-model更好
     }
   }
