@@ -2,6 +2,50 @@ import Vue from 'vue'
 
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
+
+import Vuex from 'vuex'
+Vue.use(Vuex)
+
+let car = JSON.parse(localStorage.getItem('car') || '[]')
+
+const store = new Vuex.Store({
+    state: { // this.$store.state.***
+        car: car // 保存购物车中的商品 {id:,count:,price:,selected:,}
+    },
+    mutations: { // this.$store.commit('func-name', params)
+        addToCar(state, goodsinfo) {
+            let flag = false
+
+            state.car.some(item => {
+                if (item.id == goodsinfo.id) {
+                    item.count += parseInt(goodsinfo.count)
+                    flag = true
+                    return true
+                }
+            })
+
+            if (flag === false) {
+                state.car.push(goodsinfo)
+            }
+
+            // 把购物车存储到 localStorage
+            localStorage.setItem('car', JSON.stringify(state.car))
+        }
+    },
+    getters: { // this.$store.getters.***
+        // 相当于 计算属性，也相当于 filters
+        getAllCount(state) {
+            var c = 0
+            state.car.forEach(item => {
+                c += item.count
+            })
+            return c
+        }
+
+        // return car.reduce((prive ,cur) => prev + cur)
+    }
+})
+
 import router from './router.js'
 
 import app from './app.vue'
@@ -50,5 +94,6 @@ Vue.use(VuePreview)
 let vm = new Vue({
     el: "#app",
     render: c => c(app),
-    router
+    router, //@@@
+    store //@@@
 })
