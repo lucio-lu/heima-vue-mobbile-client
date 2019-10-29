@@ -1,7 +1,13 @@
 <template>
   <div class="app-container">
     <!-- https://mint-ui.github.io/docs/#/en2/header -->
-    <mt-header fixed title="黑马程序员 Vue项目"></mt-header>
+    <!-- https://mint-ui.github.io/docs/#/zh-cn2/header -->
+    <mt-header fixed title="Vue手机商城项目">
+      <span slot="left" @click="goBack" v-show="goBackShow">
+        <mt-button icon="back">返回</mt-button>
+      </span>
+      <!-- <mt-button icon="more" slot="right"></mt-button> -->
+    </mt-header>
     <transition>
       <router-view></router-view>
     </transition>
@@ -29,7 +35,34 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      goBackShow: true
+    };
+  },
+  created() {
+    if (this.$route.fullPath === "/home") {
+      this.goBackShow = false;
+    } else {
+      this.goBackShow = true;
+    }
+  },
+  methods: {
+    goBack() {
+      this.$router.go(-1);
+    }
+  },
+  watch: {
+    "$route.fullPath": function(newVal) {
+      if (newVal === "/home") {
+        this.goBackShow = false;
+      } else {
+        this.goBackShow = true;
+      }
+    }
+  }
+};
 </script>
 
 <style scoped>
