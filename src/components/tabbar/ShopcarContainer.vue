@@ -6,7 +6,10 @@
         <div class="mui-card-content">
           <div class="mui-card-content-inner">
             <!-- https://mint-ui.github.io/docs/#/zh-cn2/switch -->
-            <mt-switch nvalue="$store.state"></mt-switch>
+            <mt-switch
+              v-model="$store.getters.getGoodsSelected[item.id]"
+              @change="selectedChanged(item.id, $store.getters.getGoodsSelected[item.id])"
+            ></mt-switch>
             <img :src="item.thumb_path" />
             <div class="info">
               <h1>{{ item.title }}</h1>
@@ -27,7 +30,17 @@
       <!-- 结算区域 -->
       <div class="mui-card">
         <div class="mui-card-content">
-          <div class="mui-card-content-inner">222</div>
+          <div class="mui-card-content-inner jiesuan">
+            <div class="left">
+              <p>总计（不含运费）</p>
+              <p>
+                已勾选商品
+                <span class="red">{{ $store.getters.getGoodsCountAndAmout.count }}</span> 件，总价
+                <span class="red">￥ {{ $store.getters.getGoodsCountAndAmout.amount }}</span>
+              </p>
+            </div>
+            <mt-button type="danger">去结算</mt-button>
+          </div>
         </div>
       </div>
 
@@ -70,6 +83,9 @@ export default {
     remove(id, index) {
       this.goodsList.splice(index, 1);
       this.$store.commit("removeFromCar", id);
+    }, //
+    selectedChanged(id, val) {
+      this.$store.commit("updateGoodsSelected", { id: id, selected: val });
     }
   },
   components: {
@@ -104,6 +120,17 @@ export default {
         color: red;
         font-weight: blod;
       }
+    }
+  }
+
+  .jiesuan {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .red {
+      color: red;
+      font-weight: bold;
+      font-size: 16px;
     }
   }
 }
