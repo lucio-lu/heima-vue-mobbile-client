@@ -5,7 +5,17 @@
       <!-- 在组件中使用v-for，一定要使用 key -->
       <mt-swipe-item v-for="item in lunbotuList" :key="item.url">
         <a :href="item.url" target="_blank">
-          <img :src="item.img" :class="{full:isfull}" />
+          <img
+            v-if="item.src.lastIndexOf('.jpg') === item.src.length - 4"
+            :src="item.src"
+            :class="{full:isfull}"
+          />
+          <video
+            v-if="item.src.lastIndexOf('.mp4') === item.src.length - 4"
+            :src="item.src"
+            style="height:100%"
+            controls="controls"
+          ></video>
         </a>
       </mt-swipe-item>
     </mt-swipe>

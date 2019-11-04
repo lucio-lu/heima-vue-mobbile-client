@@ -71,28 +71,34 @@ export default {
     };
   },
   created() {
-    this.getLunbotu();
     this.getInfo();
   },
   methods: {
-    getLunbotu() {
-      this.$http.get("api/getThumImagesGoods/" + this.id).then(result => {
-        if (result.body.status == 0) {
-          result.body.message.forEach(element => {
-            element.img = element.src;
-          });
-          this.lunbotu = result.body.message;
-        } else {
-          Toast("获取轮播图失败");
-        }
-      });
-    }, // getLunbotu()
     getInfo() {
-      this.$http.get("api/goods/getinfo/" + this.id).then(result => {
-        if (result.body.status == 0) {
-          this.goodsinfo = result.body.message;
-        } else {
+      let p1 = this.$http.get("api/goods/getinfo/" + this.id);
+      let p2 = this.$http.get("api/getThumImagesGoods/" + this.id);
+      let p = Promise.all([p1, p2]).then(results => {
+        let post1 = results[0];
+        let post2 = results[1];
+
+        if (post1.body.status != 0) {
           Toast("获取商品信息失败");
+          return;
+        } else if (post2.body.status != 0) {
+          Toast("获取轮播图失败");
+          return;
+        } else {
+          this.goodsinfo = post1.body.message[0];
+          if (post1.body.message[0].video_url) {
+            this.lunbotu.push({
+              src: post1.body.message[0].video_url
+            });
+          }
+          if (post2.body.status == 0) {
+            post2.body.message.forEach(element => {
+              this.lunbotu.push(element);
+            });
+          }
         }
       });
     }, // getInfo()
